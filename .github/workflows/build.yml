@@ -9,43 +9,26 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout (patches + workflow)
+      - name: Checkout codigo completo
         uses: actions/checkout@v7
-        with:
-          sparse-checkout: |
-            ui-patches
-            assets
-            .github
-          sparse-checkout-cone-mode: false
 
-      - name: Baixar fonte oficial
-        run: git clone --depth 1 https://github.com/bmax121/APatch.git apatch-src
-
-      - name: Rebrand APatch -> MrEzequielSU
-        working-directory: apatch-src
+      - name: Aplicar icones do mascote
         run: |
-          set -e
-          grep -rl 'me\.bmax\.apatch' app apd 2>/dev/null | xargs sed -i 's/me\.bmax\.apatch/com.mrezequiel.su/g' || true
-          grep -rl 'me/bmax/apatch' app apd 2>/dev/null | xargs sed -i 's#me/bmax/apatch#com/mrezequiel/su#g' || true
-          if [ -d app/src/main/java/me/bmax/apatch ]; then
-            mkdir -p app/src/main/java/com/mrezequiel
-            mv app/src/main/java/me/bmax/apatch app/src/main/java/com/mrezequiel/su
-            rm -rf app/src/main/java/me
-          fi
-          if [ -d app/src/main/aidl/me/bmax/apatch ]; then
-            mkdir -p app/src/main/aidl/com/mrezequiel
-            mv app/src/main/aidl/me/bmax/apatch app/src/main/aidl/com/mrezequiel/su
-            rm -rf app/src/main/aidl/me
-          fi
-          sed -i 's/APatch/MrEzequielSU/g' app/src/main/res/values/strings.xml
-          # Versao limpa 1.0 (bump manual a cada release)
-          sed -i 's/versionCode = managerVersionCode/versionCode = 1/' app/build.gradle.kts
-          sed -i 's/versionName = managerVersionName/versionName = "1.0"/' app/build.gradle.kts
-          sed -i 's|base.archivesName = .*|base.archivesName = "MrEzequielSU_1.0"|' app/build.gradle.kts
-          grep -n "versionCode = 1\|versionName = \|archivesName" app/build.gradle.kts | head -n 4
-          echo "=== conferencia ==="
-          grep -rn 'me\.bmax\.apatch\|me/bmax/apatch' app apd 2>/dev/null | head -n 5 || echo "zero ocorrencias restantes"
-          grep -n 'app_name' app/src/main/res/values/strings.xml | head -n 2
+          sudo apt-get install -y imagemagick > /dev/null
+          mkdir -p app/src/main/res/mipmap-xxxhdpi
+          convert assets/icons/nerd.jpg -resize 512x512! app/src/main/res/mipmap-xxxhdpi/mascot_fg.png
+          convert assets/icons/nerd.jpg -resize 512x512! app/src/main/ic_launcher-playstore.png
+          printf '%s\n' '<?xml version="1.0" encoding="utf-8"?>' \
+            '<resources>' \
+            '    <color name="mascot_bg">#FF1A120B</color>' \
+            '</resources>' > app/src/main/res/values/mascot_colors.xml
+          printf '%s\n' '<?xml version="1.0" encoding="utf-8"?>' \
+            '<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">' \
+            '    <background android:drawable="@color/mascot_bg"/>' \
+            '    <foreground android:drawable="@mipmap/mascot_fg"/>' \
+            '    <monochrome android:drawable="@mipmap/mascot_fg"/>' \
+            '</adaptive-icon>' > app/src/main/res/mipmap-anydpi/ic_launcher.xml
+          ls -lh app/src/main/res/mipmap-xxxhdpi/mascot_fg.png
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -71,44 +54,10 @@ jobs:
       - name: Cache Rust
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: apatch-src/apd
+          workspaces: apd
           cache-targets: false
 
-      - name: Aplicar UI custom (tema mascote + fundo)
-        run: |
-          python3 ui-patches/apply-ui.py apatch-src ui-patches
-
-      - name: Verificar UI custom aplicada
-        working-directory: apatch-src
-        run: |
-          ls app/src/main/java/com/mrezequiel/su/ui/theme/MascotTheme.kt \
-             app/src/main/java/com/mrezequiel/su/ui/theme/ThemedBackground.kt \
-             app/src/main/java/com/mrezequiel/su/ui/screen/BackgroundSettings.kt
-          grep -c DarkMascotTheme app/src/main/java/com/mrezequiel/su/ui/theme/Theme.kt
-          grep -c BackgroundSettingRow app/src/main/java/com/mrezequiel/su/ui/screen/Settings.kt
-
-      - name: Aplicar icones + banner do mascote
-        run: |
-          sudo apt-get install -y imagemagick > /dev/null
-          mkdir -p apatch-src/app/src/main/res/mipmap-xxxhdpi
-          convert assets/icons/nerd.jpg -resize 512x512! apatch-src/app/src/main/res/mipmap-xxxhdpi/mascot_fg.png
-          convert assets/icons/nerd.jpg -resize 512x512! apatch-src/app/src/main/ic_launcher-playstore.png
-          printf '%s\n' '<?xml version="1.0" encoding="utf-8"?>' \
-            '<resources>' \
-            '    <color name="mascot_bg">#FF1A120B</color>' \
-            '</resources>' > apatch-src/app/src/main/res/values/mascot_colors.xml
-          printf '%s\n' '<?xml version="1.0" encoding="utf-8"?>' \
-            '<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">' \
-            '    <background android:drawable="@color/mascot_bg"/>' \
-            '    <foreground android:drawable="@mipmap/mascot_fg"/>' \
-            '    <monochrome android:drawable="@mipmap/mascot_fg"/>' \
-            '</adaptive-icon>' > apatch-src/app/src/main/res/mipmap-anydpi/ic_launcher.xml
-          cp assets/banner.txt apatch-src/banner
-          ls -lh apatch-src/app/src/main/res/mipmap-xxxhdpi/mascot_fg.png
-          head -n 3 apatch-src/banner
-
       - name: Build with Gradle
-        working-directory: apatch-src
         run: |
           echo 'org.gradle.parallel=true' >> gradle.properties
           echo 'org.gradle.vfs.watch=true' >> gradle.properties
@@ -119,7 +68,7 @@ jobs:
 
       - name: Verificar UI no APK
         run: |
-          APK=$(ls apatch-src/app/build/outputs/apk/debug/*.apk | head -n 1)
+          APK=$(ls app/build/outputs/apk/debug/*.apk | head -n 1)
           echo "APK: $APK"
           for s in bg_mode MascotTheme; do
             c=$(unzip -p "$APK" 'classes*.dex' | grep -a -c "$s" || true)
@@ -132,6 +81,6 @@ jobs:
         with:
           name: MrEzequielSU
           path: |
-            apatch-src/app/build/outputs/apk/**/*.apk
+            app/build/outputs/apk/**/*.apk
           if-no-files-found: error
           retention-days: 14
