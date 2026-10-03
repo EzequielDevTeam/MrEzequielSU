@@ -9,6 +9,14 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout (patches + workflow)
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            ui-patches
+            .github
+          sparse-checkout-cone-mode: false
+
       - name: Baixar fonte oficial
         run: git clone --depth 1 https://github.com/bmax121/APatch.git apatch-src
 
@@ -59,6 +67,10 @@ jobs:
         with:
           workspaces: apatch-src/apd
           cache-targets: false
+
+      - name: Aplicar UI custom (tema mascote + fundo)
+        run: |
+          python3 ui-patches/apply-ui.py apatch-src ui-patches
 
       - name: Build with Gradle
         working-directory: apatch-src
