@@ -86,6 +86,26 @@ jobs:
           grep -c DarkMascotTheme app/src/main/java/com/mrezequiel/su/ui/theme/Theme.kt
           grep -c BackgroundSettingRow app/src/main/java/com/mrezequiel/su/ui/screen/Settings.kt
 
+      - name: Aplicar icones + banner do mascote
+        run: |
+          sudo apt-get install -y imagemagick > /dev/null
+          mkdir -p apatch-src/app/src/main/res/mipmap-xxxhdpi
+          convert assets/icons/nerd.jpg -resize 512x512! apatch-src/app/src/main/res/mipmap-xxxhdpi/mascot_fg.png
+          convert assets/icons/nerd.jpg -resize 512x512! apatch-src/app/src/main/ic_launcher-playstore.png
+          printf '%s\n' '<?xml version="1.0" encoding="utf-8"?>' \
+            '<resources>' \
+            '    <color name="mascot_bg">#FF1A120B</color>' \
+            '</resources>' > apatch-src/app/src/main/res/values/mascot_colors.xml
+          printf '%s\n' '<?xml version="1.0" encoding="utf-8"?>' \
+            '<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">' \
+            '    <background android:drawable="@color/mascot_bg"/>' \
+            '    <foreground android:drawable="@mipmap/mascot_fg"/>' \
+            '    <monochrome android:drawable="@mipmap/mascot_fg"/>' \
+            '</adaptive-icon>' > apatch-src/app/src/main/res/mipmap-anydpi/ic_launcher.xml
+          cp assets/banner.txt apatch-src/banner
+          ls -lh apatch-src/app/src/main/res/mipmap-xxxhdpi/mascot_fg.png
+          head -n 3 apatch-src/banner
+
       - name: Build with Gradle
         working-directory: apatch-src
         run: |
