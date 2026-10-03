@@ -32,7 +32,7 @@ fun ThemedBackground(content: @Composable () -> Unit) {
             "color" -> Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(colorLong.toULong()))
+                    .background(Color(colorLong.toULong() and 0xFFFFFFFFuL))
             )
             "photo" -> if (!uri.isNullOrEmpty()) {
                 val context = LocalContext.current
