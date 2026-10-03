@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 
-import com.mrezequiel.su.util.APatchCliKt;
+import com.mrezequiel.su.util.MrEzequielSUCliKt;
 
 /**
  * Handler class to open files from file system by root access
@@ -109,7 +109,7 @@ public final class SuFilePathHandler implements WebViewAssetLoader.PathHandler {
                 throw new IllegalArgumentException("The given directory \"" + directory
                         + "\" doesn't exist under an allowed app internal storage directory");
             }
-            mShell = APatchCliKt.createRootShell(true);
+            mShell = MrEzequielSUCliKt.createRootShell(true);
         } catch (IOException e) {
             throw new IllegalArgumentException(
                     "Failed to resolve the canonical path for the given directory: "

@@ -15,13 +15,13 @@ function ui_printfile() {
 
 function kernelFlagsErr(){
 	ui_print "- Installation has Aborted!"
-	ui_print "- APatch requires CONFIG_KALLSYMS to be Enabled."
+	ui_print "- MrEzequielSU requires CONFIG_KALLSYMS to be Enabled."
 	ui_print "- But your kernel seems NOT enabled it."
 	exit
 }
 
 function apatchNote(){
-	ui_print "- APatch Patch Done"
+	ui_print "- MrEzequielSU Patch Done"
 	ui_print "- We do have saved Origin Boot image to /data"
 	ui_print "- If you encounter bootloop, reboot into Recovery and flash it"
 	exit
@@ -29,7 +29,7 @@ function apatchNote(){
 
 function failed(){
 	ui_printfile /dev/tmp/install/log
-	ui_print "- APatch Patch Failed."
+	ui_print "- MrEzequielSU Patch Failed."
 	ui_print "- Please feedback to the developer with the screenshots."
 	exit
 }

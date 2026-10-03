@@ -1,6 +1,6 @@
 //! Magica-style jailbreak escalation: enable adb root via the property service,
 //! then run the actual `late-load` through an adb shell so it has full root.
-//! Ported from KernelSU's `ksud/src/magica.rs` and adapted for APatch.
+//! Ported from KernelSU's `ksud/src/magica.rs` and adapted for MrEzequielSU (via APatch).
 
 use adb_client::ADBDeviceExt;
 use adb_client::tcp::ADBTcpDevice;

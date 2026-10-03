@@ -53,7 +53,7 @@ private fun SystemBarStyle(
 val refreshTheme = MutableLiveData(false)
 
 @Composable
-fun APatchTheme(
+fun MrEzequielSUTheme(
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current

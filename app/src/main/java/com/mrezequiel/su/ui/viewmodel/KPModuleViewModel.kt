@@ -115,7 +115,7 @@ class KPModuleViewModel : ViewModel() {
                         lines.firstOrNull { it.startsWith("load_source=") }?.removePrefix("load_source=") ?: ""
                     )
                     // load_source=file only describes where this instance was loaded from.
-                    // It does not mean the KPM belongs to APatch's persistent install store.
+                    // It does not mean the KPM belongs to MrEzequielSU's persistent install store.
                     // The installed flag is set only when the directory scan below finds
                     // /data/adb/ap/kpm/<id>/<id>.kpm.
                     result[info.moduleId] = info.copy(installed = false, disabled = false)

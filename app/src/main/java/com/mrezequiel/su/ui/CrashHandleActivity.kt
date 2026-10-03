@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import com.mrezequiel.su.BuildConfig
 import com.mrezequiel.su.R
-import com.mrezequiel.su.ui.theme.APatchTheme
+import com.mrezequiel.su.ui.theme.MrEzequielSUTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -83,7 +83,7 @@ class CrashHandleActivity : ComponentActivity() {
         }
 
         setContent {
-            APatchTheme {
+            MrEzequielSUTheme {
                 CrashHandleScreen(message)
             }
         }
@@ -145,7 +145,7 @@ private fun CrashHandleScreen(
 @Preview
 @Composable
 fun CrashHandleScreenPreview() {
-    APatchTheme {
+    MrEzequielSUTheme {
         CrashHandleScreen("Crash log here")
     }
 }

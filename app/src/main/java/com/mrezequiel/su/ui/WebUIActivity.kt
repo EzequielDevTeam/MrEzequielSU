@@ -38,7 +38,7 @@ import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import com.mrezequiel.su.APApplication
-import com.mrezequiel.su.ui.theme.APatchTheme
+import com.mrezequiel.su.ui.theme.MrEzequielSUTheme
 import com.mrezequiel.su.ui.viewmodel.SuperUserViewModel
 import com.mrezequiel.su.ui.webui.AppIconUtil
 import com.mrezequiel.su.ui.webui.Insets
@@ -81,7 +81,7 @@ class WebUIActivity : ComponentActivity() {
         })
 
         setContent {
-            APatchTheme {
+            MrEzequielSUTheme {
                 Box(
                     modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
                     contentAlignment = Alignment.Center

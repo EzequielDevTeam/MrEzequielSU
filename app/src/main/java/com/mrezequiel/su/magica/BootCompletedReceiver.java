@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.mrezequiel.su.util.APatchCliKt;
+import com.mrezequiel.su.util.MrEzequielSUCliKt;
 
 /** Auto-jailbreak on boot: if root is not available, trigger the magica chain. */
 public class BootCompletedReceiver extends BroadcastReceiver {
@@ -21,7 +21,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
                 && !"com.mrezequiel.su.magica.LAUNCH".equals(action)) {
             return;
         }
-        if (APatchCliKt.rootAvailable()) {
+        if (MrEzequielSUCliKt.rootAvailable()) {
             return;
         }
         try {

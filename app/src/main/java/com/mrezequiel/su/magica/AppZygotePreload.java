@@ -13,7 +13,7 @@ import java.io.File;
  * with `late-load --magica`, which escalates to full root via adb.
  */
 public class AppZygotePreload implements ZygotePreload {
-    public static final String TAG = "APatchMagica";
+    public static final String TAG = "MrEzequielSUMagica";
 
     private static native void forkDontCareAndExecApd(String apdPath, String modulePath, String packageName);
 

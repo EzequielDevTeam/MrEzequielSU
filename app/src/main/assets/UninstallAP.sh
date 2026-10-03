@@ -14,12 +14,12 @@ function ui_printfile() {
 }
 
 function apatchNote(){
-	ui_print "- APatch Unpatch Done"
+	ui_print "- MrEzequielSU Unpatch Done"
 	exit
 }
 
 function failed(){
-	ui_print "- APatch Unpatch Failed."
+	ui_print "- MrEzequielSU Unpatch Failed."
 	ui_print "- Please feedback to the developer with the screenshots."
 	exit
 }

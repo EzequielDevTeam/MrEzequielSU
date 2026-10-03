@@ -65,7 +65,7 @@ import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import com.mrezequiel.su.APApplication
 import com.mrezequiel.su.ui.screen.BottomBarDestination
-import com.mrezequiel.su.ui.theme.APatchTheme
+import com.mrezequiel.su.ui.theme.MrEzequielSUTheme
 import com.mrezequiel.su.ui.viewmodel.SuperUserViewModel
 import com.mrezequiel.su.util.ui.LocalSnackbarHost
 
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            APatchTheme {
+            MrEzequielSUTheme {
                 val navController = rememberNavController()
                 val snackBarHostState = remember { SnackbarHostState() }
                 val configuration = LocalConfiguration.current

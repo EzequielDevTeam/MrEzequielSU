@@ -20,7 +20,7 @@ use crate::{
 };
 
 fn print_usage(opts: &Options) {
-    let brief = "APatch\n\nUsage: <command> [options] [-] [user [argument...]]".to_string();
+    let brief = "MrEzequielSU\n\nUsage: <command> [options] [-] [user [argument...]]".to_string();
     print!("{}", opts.usage(&brief));
 }
 
@@ -139,7 +139,7 @@ pub fn root_shell() -> Result<()> {
     }
 
     if matches.opt_present("v") {
-        println!("{}:APatch", defs::VERSION_NAME);
+        println!("{}:MrEzequielSU", defs::VERSION_NAME);
         return Ok(());
     }
 

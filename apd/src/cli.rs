@@ -7,7 +7,7 @@ use clap::Parser;
 use log::LevelFilter;
 use std::path::PathBuf;
 
-/// APatch cli
+/// MrEzequielSU cli
 #[derive(Parser, Debug)]
 #[command(author, version = defs::VERSION_CODE, about, long_about = None)]
 struct Args {
@@ -24,7 +24,7 @@ struct Args {
 
 #[derive(clap::Subcommand, Debug)]
 enum Commands {
-    /// Manage APatch modules
+    /// Manage MrEzequielSU modules
     Module {
         #[command(subcommand)]
         command: Module,
@@ -198,7 +198,7 @@ pub fn run() -> Result<()> {
     android_logger::init_once(
         Config::default()
             .with_max_level(LevelFilter::Trace) // limit log level
-            .with_tag("APatchD")
+            .with_tag("MrEzequielSUD")
             .with_filter(
                 android_logger::FilterBuilder::new()
                     .filter_level(LevelFilter::Trace)

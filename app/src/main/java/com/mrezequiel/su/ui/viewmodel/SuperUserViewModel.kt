@@ -24,7 +24,7 @@ import com.mrezequiel.su.IAPRootService
 import com.mrezequiel.su.Natives
 import com.mrezequiel.su.apApp
 import com.mrezequiel.su.services.RootServices
-import com.mrezequiel.su.util.APatchCli
+import com.mrezequiel.su.util.MrEzequielSUCli
 import com.mrezequiel.su.util.HanziToPinyin
 import com.mrezequiel.su.util.PkgConfig
 import java.text.Collator
@@ -109,7 +109,7 @@ class SuperUserViewModel : ViewModel() {
             Shell.EXECUTOR,
             connection,
         )
-        val shell = APatchCli.SHELL
+        val shell = MrEzequielSUCli.SHELL
         task?.let { it1 -> shell.execTask(it1) }
     }
 
