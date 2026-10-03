@@ -1,0 +1,80 @@
+name: Build MrEzequielSU
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Baixar fonte oficial
+        run: git clone --depth 1 https://github.com/bmax121/APatch.git apatch-src
+
+      - name: Rebrand APatch -> MrEzequielSU
+        working-directory: apatch-src
+        run: |
+          set -e
+          grep -rl 'me\.bmax\.apatch' app apd 2>/dev/null | xargs sed -i 's/me\.bmax\.apatch/com.mrezequiel.su/g' || true
+          grep -rl 'me/bmax/apatch' app apd 2>/dev/null | xargs sed -i 's#me/bmax/apatch#com/mrezequiel/su#g' || true
+          if [ -d app/src/main/java/me/bmax/apatch ]; then
+            mkdir -p app/src/main/java/com/mrezequiel
+            mv app/src/main/java/me/bmax/apatch app/src/main/java/com/mrezequiel/su
+            rm -rf app/src/main/java/me
+          fi
+          if [ -d app/src/main/aidl/me/bmax/apatch ]; then
+            mkdir -p app/src/main/aidl/com/mrezequiel
+            mv app/src/main/aidl/me/bmax/apatch app/src/main/aidl/com/mrezequiel/su
+            rm -rf app/src/main/aidl/me
+          fi
+          sed -i 's/APatch/MrEzequielSU/g' app/src/main/res/values/strings.xml
+          echo "=== conferencia ==="
+          grep -rn 'me\.bmax\.apatch\|me/bmax/apatch' app apd 2>/dev/null | head -n 5 || echo "zero ocorrencias restantes"
+          grep -n 'app_name' app/src/main/res/values/strings.xml | head -n 2
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: jetbrains
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: ''
+
+      - name: Install toolchain
+        run: |
+          rustup default stable
+          rustup update stable
+          cargo install cargo-ndk
+          rustup target install aarch64-linux-android
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: apatch-src/apd
+          cache-targets: false
+
+      - name: Build with Gradle
+        working-directory: apatch-src
+        run: |
+          echo 'org.gradle.parallel=true' >> gradle.properties
+          echo 'org.gradle.vfs.watch=true' >> gradle.properties
+          echo 'org.gradle.jvmargs=-Xmx2048m' >> gradle.properties
+          echo 'android.native.buildOutput=verbose' >> gradle.properties
+          sed -i 's/org.gradle.configuration-cache=true//g' gradle.properties
+          ./gradlew clean assembleDebug assembleRelease
+
+      - name: Upload MrEzequielSU APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: MrEzequielSU
+          path: |
+            apatch-src/app/build/outputs/apk/**/*.apk
+          if-no-files-found: error
+          retention-days: 14
