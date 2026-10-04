@@ -106,8 +106,8 @@ android {
     defaultConfig {
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
-        versionCode = 6
-        versionName = "1.6"
+        versionCode = 7
+        versionName = "1.3"
         ndk.abiFilters.addAll(arrayOf("arm64-v8a"))
         externalNativeBuild {
             cmake {
@@ -118,7 +118,7 @@ android {
             }
         }
         buildConfigField("String", "buildKPV", "\"$kernelPatchVersion\"")
-        base.archivesName = "MrEzequielSU_1.6"
+        base.archivesName = "MrEzequielSU_1.3"
     }
 
     compileOptions {
