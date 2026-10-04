@@ -9,6 +9,13 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout (nosso KPM)
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            kpm
+          sparse-checkout-cone-mode: false
+
       - name: Setup Android SDK + NDK
         uses: android-actions/setup-android@v4
         with:
@@ -35,5 +42,19 @@ jobs:
         with:
           name: kpm-hosts-redirect
           path: kpm-src/src/hosts_file_redirect/*.kpm
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Compilar su_sensor (nosso)
+        run: |
+          cp -r kpm/su-sensor kpm-src/src/su-sensor
+          cd kpm-src/src/su-sensor && make 2>&1 | tail -n 15
+          ls -lh *.kpm
+
+      - name: Upload su_sensor
+        uses: actions/upload-artifact@v4
+        with:
+          name: kpm-su-sensor
+          path: kpm-src/src/su-sensor/*.kpm
           if-no-files-found: error
           retention-days: 14
