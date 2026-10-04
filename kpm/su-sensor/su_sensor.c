@@ -41,9 +41,7 @@ static bool is_su_path(const char *name)
 static struct file *hook_replace(do_filp_open)(int dfd, struct filename *pathname, const struct open_flags *o)
 {
     if (pathname && pathname->name && is_su_path(pathname->name)) {
-        pr_info("MRESU su-req uid=%u comm=%s\n",
-                current_uid(),
-                current->comm);
+        pr_info("MRESU su-req uid=%u path=%s\n", current_uid(), pathname->name);
     }
     return hook_call_backup(do_filp_open, dfd, pathname, o);
 }
