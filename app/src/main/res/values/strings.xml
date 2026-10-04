@@ -284,4 +284,10 @@
     <string name="bg_color">Cor sólida</string>
     <string name="bg_photo">Foto / GIF</string>
     <string name="bg_pick">Escolher imagem</string>
+    <string name="su_grant_duration_title">Duração do root</string>
+    <string name="su_duration_forever">Sempre</string>
+    <string name="su_duration_hour">1 hora</string>
+    <string name="su_duration_day">1 dia</string>
+    <string name="su_duration_week">7 dias</string>
+    <string name="su_temp_label">Temporário</string>
 </resources>
