@@ -88,6 +88,14 @@ jobs:
             [ "$c" -gt 0 ] || (echo "FALHA: $s ausente no dex" && exit 1)
           done
 
+      - name: Upload mapping (desofuscar crashes)
+        uses: actions/upload-artifact@v4
+        with:
+          name: MrEzequielSU-mapping
+          path: app/build/outputs/mapping/release/mapping.txt
+          if-no-files-found: warn
+          retention-days: 14
+
       - name: Upload MrEzequielSU APKs
         uses: actions/upload-artifact@v4
         with:
