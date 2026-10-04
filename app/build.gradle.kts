@@ -107,7 +107,7 @@ android {
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
         versionCode = 4
-        versionName = "1.4"
+        versionName = "1.3"
         ndk.abiFilters.addAll(arrayOf("arm64-v8a"))
         externalNativeBuild {
             cmake {
@@ -118,7 +118,7 @@ android {
             }
         }
         buildConfigField("String", "buildKPV", "\"$kernelPatchVersion\"")
-        base.archivesName = "MrEzequielSU_1.4"
+        base.archivesName = "MrEzequielSU_1.3"
     }
 
     compileOptions {
@@ -235,11 +235,19 @@ fun downloadFileRetry(url: String, destFile: File, maxRetries: Int = 5) {
     }
 }
 
-// d03 vendorizado: download desligado
-// (bloco downloadKpimg removido)
+registerDownloadTask(
+    taskName = "downloadKpimg",
+    srcUrl = "https://github.com/bmax121/KernelPatch/releases/download/$kernelPatchVersion/kpimg-android",
+    destPath = "${project.projectDir}/src/main/assets/kpimg",
+    project = project
+)
 
-// d03 vendorizado: download desligado
-// (bloco downloadKptools removido)
+registerDownloadTask(
+    taskName = "downloadKptools",
+    srcUrl = "https://github.com/bmax121/KernelPatch/releases/download/$kernelPatchVersion/kptools-android",
+    destPath = "${project.projectDir}/libs/arm64-v8a/libkptools.so",
+    project = project
+)
 
 // Compat kp version less than 0.10.7
 // TODO: Remove in future
@@ -286,6 +294,8 @@ tasks.register<Copy>("mergeScripts") {
 }
 
 tasks.getByName("preBuild").dependsOn(
+    "downloadKpimg",
+    "downloadKptools",
     "downloadCompatKpatch",
     "downloadJailbreakKo",
     "mergeScripts",
