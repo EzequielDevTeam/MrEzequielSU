@@ -3,8 +3,10 @@ package com.mrezequiel.su.ui.screen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +14,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.DialogWindowProvider
+import com.mrezequiel.su.util.SuExpiry
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Security
@@ -24,6 +37,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -135,6 +149,64 @@ fun SuperUserScreen() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun GrantDurationDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (Long) -> Unit
+) {
+    BasicAlertDialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            decorFitsSystemWindows = true,
+            usePlatformDefaultWidth = false,
+        )
+    ) {
+        Surface(
+            modifier = Modifier
+                .width(310.dp)
+                .wrapContentHeight(),
+            shape = RoundedCornerShape(30.dp),
+            tonalElevation = AlertDialogDefaults.TonalElevation,
+            color = AlertDialogDefaults.containerColor,
+        ) {
+            LazyColumn(modifier = Modifier.padding(16.dp)) {
+                item {
+                    Text(
+                        text = stringResource(id = R.string.su_grant_duration_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                }
+                val options = listOf(
+                    R.string.su_duration_forever to SuExpiry.FOREVER,
+                    R.string.su_duration_hour to SuExpiry.ONE_HOUR,
+                    R.string.su_duration_day to SuExpiry.ONE_DAY,
+                    R.string.su_duration_week to SuExpiry.SEVEN_DAYS
+                )
+                options.forEach { (labelId, durationMs) ->
+                    item {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onConfirm(durationMs) }
+                                .padding(vertical = 8.dp)
+                        ) {
+                            Text(text = stringResource(id = labelId))
+                        }
+                    }
+                }
+            }
+
+            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
+            com.mrezequiel.su.util.ui.APDialogBlurBehindUtils.setupWindowBlurListener(
+                dialogWindowProvider.window
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AppItem(
@@ -143,6 +215,7 @@ private fun AppItem(
 ) {
     val config = app.config
     var showEditProfile by remember { mutableStateOf(false) }
+    var showDuration by remember { mutableStateOf(false) }
     val rootGranted = config.allow != 0
     val excluded = config.exclude == 1
 
@@ -177,6 +250,9 @@ private fun AppItem(
                     if (rootGranted) {
                         LabelText(label = config.profile.uid.toString())
                         LabelText(label = config.profile.toUid.toString())
+                        if (SuExpiry.isTemporary(app.uid)) {
+                            LabelText(label = stringResource(id = R.string.su_temp_label))
+                        }
                         LabelText(
                             label = when {
                                 // todo: valid scontext ?
@@ -190,10 +266,21 @@ private fun AppItem(
         },
         trailingContent = {
             Switch(checked = rootGranted, onCheckedChange = {
-                viewModel.setRootGranted(app, it)
+                if (it) showDuration = true
+                else viewModel.setRootGranted(app, false)
             })
         },
     )
+
+    if (showDuration) {
+        GrantDurationDialog(
+            onDismiss = { showDuration = false },
+            onConfirm = { durationMs ->
+                showDuration = false
+                viewModel.setRootGranted(app, true, durationMs)
+            }
+        )
+    }
 
     AnimatedVisibility(
         visible = showEditProfile && !rootGranted,
