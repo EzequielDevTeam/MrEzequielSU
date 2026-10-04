@@ -191,7 +191,7 @@ private fun BackgroundChooseDialog(
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clip(CircleShape)
-                                    .background(Color(argb.toULong() and 0xFFFFFFFFuL))
+                                    .background(Color(argb.toInt()))
                                     .border(
                                         2.dp,
                                         MaterialTheme.colorScheme.primary,
