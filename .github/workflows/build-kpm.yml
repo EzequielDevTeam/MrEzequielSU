@@ -1,0 +1,39 @@
+name: Build KPM hosts_file_redirect
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Setup Android SDK + NDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: ''
+
+      - name: Instalar NDK
+        run: |
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager "ndk;28.2.13676358" > /dev/null
+          echo "ANDROID_NDK_LATEST_HOME=$ANDROID_HOME/ndk/28.2.13676358" >> $GITHUB_ENV
+
+      - name: Baixar exemplo oficial
+        run: git clone --depth 1 https://github.com/AndroidPatch/kpm.git kpm-src
+
+      - name: Compilar hosts_file_redirect
+        working-directory: kpm-src/src/hosts_file_redirect
+        run: |
+          make 2>&1 | tail -n 15
+          ls -lh *.kpm
+
+      - name: Upload KPM
+        uses: actions/upload-artifact@v4
+        with:
+          name: kpm-hosts-redirect
+          path: kpm-src/src/hosts_file_redirect/*.kpm
+          if-no-files-found: error
+          retention-days: 14
