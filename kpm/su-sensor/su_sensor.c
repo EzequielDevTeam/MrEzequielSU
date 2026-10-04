@@ -12,7 +12,6 @@
 #include <linux/printk.h>
 #include <linux/sched.h>
 #include <linux/string.h>
-#include <linux/uidgid.h>
 
 #include <kpm_utils.h>
 #include <kpm_hook_utils.h>
@@ -43,7 +42,7 @@ static struct file *hook_replace(do_filp_open)(int dfd, struct filename *pathnam
 {
     if (pathname && pathname->name && is_su_path(pathname->name)) {
         pr_info("MRESU su-req uid=%u comm=%s\n",
-                from_kuid_munged(current_user_ns(), current_uid()),
+                current_uid(),
                 current->comm);
     }
     return hook_call_backup(do_filp_open, dfd, pathname, o);
