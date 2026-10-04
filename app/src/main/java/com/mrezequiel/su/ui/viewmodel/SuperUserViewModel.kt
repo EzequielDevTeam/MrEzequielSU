@@ -25,6 +25,7 @@ import com.mrezequiel.su.Natives
 import com.mrezequiel.su.apApp
 import com.mrezequiel.su.services.RootServices
 import com.mrezequiel.su.util.MrEzequielSUCli
+import com.mrezequiel.su.util.SuExpiry
 import com.mrezequiel.su.util.HanziToPinyin
 import com.mrezequiel.su.util.PkgConfig
 import java.text.Collator
@@ -158,6 +159,15 @@ class SuperUserViewModel : ViewModel() {
                         config.allow = 1
                         config.profile = actProfile
                     }
+                    // Root temporario vencido perde o acesso ao listar
+                    if (config.allow != 0 && SuExpiry.isExpired(uid)) {
+                        try {
+                            Natives.revokeSu(uid)
+                        } catch (_: Exception) {
+                        }
+                        SuExpiry.cancel(uid, apApp)
+                        config.allow = 0
+                    }
                     val label = appInfo.loadLabel(apApp.packageManager).toString()
                     AppInfo(
                         label = label,
@@ -195,7 +205,7 @@ class SuperUserViewModel : ViewModel() {
         }
     }
 
-    fun setRootGranted(app: AppInfo, granted: Boolean) {
+    fun setRootGranted(app: AppInfo, granted: Boolean, durationMs: Long = SuExpiry.FOREVER) {
         val config = app.config
         val newConfig = if (granted) {
             config.copy(
@@ -210,7 +220,9 @@ class SuperUserViewModel : ViewModel() {
         if (granted) {
             Natives.grantSu(app.uid, 0, newConfig.profile.scontext)
             Natives.setUidExclude(app.uid, 0)
+            SuExpiry.set(app.uid, durationMs, apApp)
         } else {
+            SuExpiry.cancel(app.uid, apApp)
             Natives.revokeSu(app.uid)
         }
         updateAppConfig(app, newConfig)
