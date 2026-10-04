@@ -405,7 +405,7 @@ class PatchesViewModel : ViewModel() {
 
                     val apVer = Version.getManagerVersion().second
                     val rand = (1..4).map { ('a'..'z').random() }.joinToString("")
-                    val outFilename = "apatch_patched_${apVer}_${BuildConfig.buildKPV}_${rand}.img"
+                    val outFilename = "mrezequielsu_patched_${apVer}_${BuildConfig.buildKPV}_${rand}.img"
 
                     val logs = object : CallbackList<String>() {
                         override fun onAddElement(e: String?) {

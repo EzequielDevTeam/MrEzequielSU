@@ -66,6 +66,18 @@ jobs:
           sed -i 's/org.gradle.configuration-cache=true//g' gradle.properties
           chmod +x gradlew && ./gradlew clean assembleDebug assembleRelease
 
+      - name: Assinar release com chave fixa
+        run: |
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin:$PATH"
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager "build-tools;35.0.0" > /dev/null
+          APKSIGNER="$ANDROID_HOME/build-tools/35.0.0/apksigner"
+          for APK in app/build/outputs/apk/release/*.apk; do
+            "$APKSIGNER" sign --key keys/mre-release.pk8 --cert keys/mre-release.x509.pem --out "${APK%.apk}-signed.apk" "$APK"
+            mv "${APK%.apk}-signed.apk" "$APK"
+          done
+          "$APKSIGNER" verify --print-certs app/build/outputs/apk/release/*.apk | head -n 8
+
       - name: Verificar UI no APK
         run: |
           APK=$(ls app/build/outputs/apk/debug/*.apk | head -n 1)
