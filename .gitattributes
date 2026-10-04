@@ -23,3 +23,5 @@ tools/** binary
 # Help GitHub detect languages
 native/jni/external/** linguist-vendored
 native/jni/systemproperties/** linguist-language=C++
+app/src/main/assets/kpimg -text
+app/libs/arm64-v8a/libkptools.so -text
