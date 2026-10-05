@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.MutableLiveData
 import com.mrezequiel.su.APApplication
+import com.mrezequiel.su.ui.screen.AppLockGate
 import com.mrezequiel.su.ui.webui.MonetColorsProvider
 
 @Composable
@@ -127,6 +128,7 @@ fun MrEzequielSUTheme(
                 "teal" -> DarkTealTheme
                 "yellow" -> DarkYellowTheme
                 "mrezequiel" -> DarkMascotTheme
+                "oled" -> DarkOledTheme
                 else -> DarkBlueTheme
             }
         } else {
@@ -151,6 +153,7 @@ fun MrEzequielSUTheme(
                 "teal" -> LightTealTheme
                 "yellow" -> LightYellowTheme
                 "mrezequiel" -> LightMascotTheme
+                "oled" -> LightMascotTheme
                 else -> LightBlueTheme
             }
         }
@@ -174,7 +177,7 @@ fun MrEzequielSUTheme(
         typography = Typography,
         content = {
             MonetColorsProvider.UpdateCss()
-            ThemedBackground { content() }
+            ThemedBackground { AppLockGate { content() } }
         }
     )
 }
