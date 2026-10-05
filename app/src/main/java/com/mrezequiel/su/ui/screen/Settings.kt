@@ -735,6 +735,7 @@ fun ResetSUPathDialog(showDialog: MutableState<Boolean>) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuperKeyDialog(showDialog: MutableState<Boolean>) {
     var skey by remember { mutableStateOf(MrEzequielSUKeyHelper.readSPSuperKey()) }
