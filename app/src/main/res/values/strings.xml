@@ -279,6 +279,15 @@
     <string name="crash_handle_copy">Copy crash log</string>
     <string name="crash_handle_copied">Crash log copied to clipboard.</string>
     <string name="mrezequiel_theme">Mascote</string>
+    <string name="oled_theme">OLED puro</string>
+    <string name="app_lock_title">PIN do app</string>
+    <string name="app_lock_on">Protegido por PIN</string>
+    <string name="app_lock_off">Sem PIN</string>
+    <string name="app_lock_set">Definir PIN (4 dígitos)</string>
+    <string name="app_lock_enter">Digite o PIN</string>
+    <string name="app_lock_wrong">PIN incorreto</string>
+    <string name="app_lock_hint">Esqueceu? Reinstale o app (apaga o PIN junto).</string>
+    <string name="app_lock_remove">Remover PIN</string>
     <string name="bg_title">Fundo personalizado</string>
     <string name="bg_off">Desligado</string>
     <string name="bg_color">Cor sólida</string>
