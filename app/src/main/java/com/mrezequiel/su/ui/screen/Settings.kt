@@ -92,6 +92,8 @@ import com.mrezequiel.su.R
 import com.mrezequiel.su.ui.component.SwitchItem
 import com.mrezequiel.su.ui.component.rememberLoadingDialog
 import com.mrezequiel.su.ui.theme.refreshTheme
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.mrezequiel.su.util.MrEzequielSUKeyHelper
 import com.mrezequiel.su.util.getBugreportFile
 import com.mrezequiel.su.util.getKernelVersionCode
 import com.mrezequiel.su.util.isGkiKernel
@@ -148,6 +150,10 @@ fun SettingScreen() {
         val showResetSuPathDialog = remember { mutableStateOf(false) }
         if (showResetSuPathDialog.value) {
             ResetSUPathDialog(showResetSuPathDialog)
+        }
+        val showSuperKeyDialog = remember { mutableStateOf(false) }
+        if (showSuperKeyDialog.value) {
+            SuperKeyDialog(showSuperKeyDialog)
         }
 
         val showThemeChooseDialog = remember { mutableStateOf(false) }
@@ -436,6 +442,22 @@ fun SettingScreen() {
 
             PinSettingRow()
 
+            // superkey (casa o app com um boot ja patcheado)
+            ListItem(
+                headlineContent = { Text(stringResource(id = R.string.su_superkey_title)) },
+                supportingContent = {
+                    Text(
+                        text = stringResource(
+                            id = if (MrEzequielSUKeyHelper.readSPSuperKey()
+                                    .isNotEmpty()
+                            ) R.string.su_superkey_set else R.string.su_superkey_empty
+                        )
+                    )
+                },
+                modifier = Modifier.clickable {
+                    showSuperKeyDialog.value = true
+                })
+
             BackgroundSettingRow()
 
             // language
@@ -704,6 +726,59 @@ fun ResetSUPathDialog(showDialog: MutableState<Boolean>) {
                         rootShellForResult("echo $suPath > ${APApplication.SU_PATH_FILE}")
                     }) {
                         Text(stringResource(id = android.R.string.ok))
+                    }
+                }
+            }
+            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
+            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
+        }
+    }
+}
+
+@Composable
+fun SuperKeyDialog(showDialog: MutableState<Boolean>) {
+    var skey by remember { mutableStateOf(MrEzequielSUKeyHelper.readSPSuperKey()) }
+    BasicAlertDialog(
+        onDismissRequest = { showDialog.value = false }, properties = DialogProperties(
+            decorFitsSystemWindows = true,
+            usePlatformDefaultWidth = false,
+        )
+    ) {
+        Surface(
+            modifier = Modifier
+                .width(310.dp)
+                .wrapContentHeight(),
+            shape = RoundedCornerShape(30.dp),
+            tonalElevation = AlertDialogDefaults.TonalElevation,
+            color = AlertDialogDefaults.containerColor,
+        ) {
+            Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
+                Text(
+                    text = stringResource(id = R.string.su_superkey_title),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                Text(
+                    text = stringResource(id = R.string.su_superkey_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                )
+                OutlinedTextField(
+                    value = skey,
+                    onValueChange = { skey = it },
+                    label = { Text(stringResource(id = R.string.su_superkey_title)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(onClick = { showDialog.value = false }) {
+                        Text(stringResource(id = android.R.string.cancel))
+                    }
+                    Button(onClick = {
+                        showDialog.value = false
+                        MrEzequielSUKeyHelper.writeSPSuperKey(skey)
+                    }) {
+                        Text(stringResource(id = R.string.su_superkey_save))
                     }
                 }
             }
