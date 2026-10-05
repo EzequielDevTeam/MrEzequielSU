@@ -136,7 +136,7 @@ fun AboutScreen(navigator: DestinationsNavigator) {
             }
 
             OutlinedCard(
-                modifier = Modifier.padding(bottom = 30.dp, horizontal = 20.dp),
+                modifier = Modifier.padding(vertical = 30.dp, horizontal = 20.dp),
                 shape = RoundedCornerShape(15.dp)
             ) {
                 Column(
