@@ -299,4 +299,9 @@
     <string name="su_duration_day">1 dia</string>
     <string name="su_duration_week">7 dias</string>
     <string name="su_temp_label">Temporário</string>
+    <string name="su_superkey_title">SuperKey</string>
+    <string name="su_superkey_set">Definida</string>
+    <string name="su_superkey_empty">Não definida</string>
+    <string name="su_superkey_save">Salvar</string>
+    <string name="su_superkey_hint">A mesma chave usada no patch do boot. Serve para casar o app com um boot já patcheado.</string>
 </resources>
