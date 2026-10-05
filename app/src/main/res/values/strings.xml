@@ -304,4 +304,6 @@
     <string name="su_superkey_empty">Não definida</string>
     <string name="su_superkey_save">Salvar</string>
     <string name="su_superkey_hint">A mesma chave usada no patch do boot. Serve para casar o app com um boot já patcheado.</string>
+    <string name="about_credits_title">Créditos</string>
+    <string name="about_credits_text">MrEzequielSU é baseado em: APatch (bmax121), KernelPatch (bmax121), KernelSU (tiann, magica), libsu (topjohnwu), RikkaX ParcelableList. Todo o resto (tema, fundo, ícones) é original deste projeto. Licença GPL-3.0.</string>
 </resources>
