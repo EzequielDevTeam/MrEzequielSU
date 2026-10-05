@@ -68,7 +68,7 @@ fun AboutScreen(navigator: DestinationsNavigator) {
                 shape = CircleShape
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    painter = painterResource(id = R.mipmap.mascot_fg),
                     contentDescription = "icon",
                     modifier = Modifier.scale(1.4f)
                 )
@@ -116,46 +116,6 @@ fun AboutScreen(navigator: DestinationsNavigator) {
                     Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                     Text(text = stringResource(id = R.string.about_github))
                 }
-
-                FilledTonalButton(
-                    onClick = { uriHandler.openUri("https://t.me/APatchChannel") }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.telegram),
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                    Text(text = stringResource(id = R.string.about_telegram_channel))
-                }
-            }
-
-            Row(
-                modifier = Modifier.padding(top = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                FilledTonalButton(
-                    onClick = { uriHandler.openUri("https://hosted.weblate.org/engage/APatch") }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.weblate),
-                        contentDescription = null,
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
-                    )
-                    Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                    Text(text = stringResource(id = R.string.about_weblate))
-                }
-
-                FilledTonalButton(
-                    onClick = { uriHandler.openUri("https://t.me/apatch_discuss") }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.telegram),
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                    Text(text = stringResource(id = R.string.about_telegram_group))
-                }
             }
 
             OutlinedCard(
@@ -169,6 +129,28 @@ fun AboutScreen(navigator: DestinationsNavigator) {
                 ) {
                     Text(
                         text = stringResource(id = R.string.about_app_desc),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            OutlinedCard(
+                modifier = Modifier.padding(bottom = 30.dp, horizontal = 20.dp),
+                shape = RoundedCornerShape(15.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 12.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.about_credits_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.about_credits_text),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
