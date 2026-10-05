@@ -434,6 +434,8 @@ fun SettingScreen() {
                     })
             }
 
+            PinSettingRow()
+
             BackgroundSettingRow()
 
             // language
@@ -624,6 +626,7 @@ private fun colorsList(): List<APColor> {
         APColor("teal", R.string.teal_theme),
         APColor("yellow", R.string.yellow_theme),
         APColor("mrezequiel", R.string.mrezequiel_theme),
+        APColor("oled", R.string.oled_theme),
     )
 }
 
