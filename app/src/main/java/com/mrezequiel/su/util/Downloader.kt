@@ -66,7 +66,7 @@ fun checkNewVersion(): LatestVersionInfo {
 
                 val json = org.json.JSONObject(body)
                 val changelog = json.optString("body")
-                val versionCode = json.getInt("name")
+                val versionCode = json.optString("tag_name").filter { it.isDigit() }.toIntOrNull() ?: 0
 
                 val assets = json.getJSONArray("assets")
                 for (i in 0 until assets.length()) {
