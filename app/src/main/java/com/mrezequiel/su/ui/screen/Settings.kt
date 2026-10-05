@@ -41,6 +41,7 @@ import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.filled.VpnKey
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
@@ -445,6 +446,7 @@ fun SettingScreen() {
             // superkey (casa o app com um boot ja patcheado)
             ListItem(
                 headlineContent = { Text(stringResource(id = R.string.su_superkey_title)) },
+                leadingContent = { Icon(Icons.Filled.VpnKey, null) },
                 supportingContent = {
                     Text(
                         text = stringResource(
