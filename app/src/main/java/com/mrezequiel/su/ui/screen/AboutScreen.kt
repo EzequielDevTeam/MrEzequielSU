@@ -116,6 +116,17 @@ fun AboutScreen(navigator: DestinationsNavigator) {
                     Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                     Text(text = stringResource(id = R.string.about_github))
                 }
+
+                FilledTonalButton(
+                    onClick = { uriHandler.openUri("https://t.me/MrEzequielSU") }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.telegram),
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
+                    Text(text = stringResource(id = R.string.about_telegram_group))
+                }
             }
 
             OutlinedCard(
