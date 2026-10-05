@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instalação - MrEzequielSU</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:720px;margin:0 auto;padding:24px;color:#eee;background:#1a120b}
+a{color:#ffb86b}h1{color:#ffb86b}.card{background:#241a10;border-radius:12px;padding:16px;margin:12px 0}
+nav a{margin-right:16px}code{background:#000;padding:2px 6px;border-radius:6px}
+</style>
+</head>
+<body>
+<nav><a href="index.html">Início</a><a href="faq.html">FAQ</a><a href="credits.html">Créditos</a></nav>
+<h1>Instalação</h1>
+<div class="card"><h3>Requisitos</h3>
+<p>Bootloader desbloqueado, backup do <code>boot.img</code> original, bateria carregada.</p></div>
+<div class="card"><h3>Passo a passo</h3>
+<ol>
+<li>Instale o APK da <a href="https://github.com/EzequielDevTeam/MrEzequielSU/releases">Release</a>.</li>
+<li>Abra o app &gt; <b>Patch</b>: selecione o <code>boot.img</code> original, defina a <b>SuperKey</b> (anote!) e patcheie.</li>
+<li>Teste sem gravar: <code>fastboot boot mrezequielsu_patched_....img</code>.</li>
+<li>Se ligou tudo: <code>fastboot flash boot</code> no slot ativo + reboot.</li>
+<li>O app deve mostrar <b>instalado</b>. Se reinstalar o app depois, digite a mesma SuperKey em <b>Ajustes &gt; SuperKey</b>.</li>
+</ol></div>
+<div class="card"><h3>Sem PC (Direct Install)</h3>
+<p>Com root já ativo, o app patcheia e instala direto, sem computador.</p></div>
+</body>
+</html>
