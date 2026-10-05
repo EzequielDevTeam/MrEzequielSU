@@ -17,8 +17,11 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -95,6 +98,7 @@ fun PinSettingRow() {
 
     ListItem(
         headlineContent = { Text(text = stringResource(id = R.string.app_lock_title)) },
+        leadingContent = { Icon(Icons.Filled.Lock, null) },
         supportingContent = {
             Text(
                 text = stringResource(
