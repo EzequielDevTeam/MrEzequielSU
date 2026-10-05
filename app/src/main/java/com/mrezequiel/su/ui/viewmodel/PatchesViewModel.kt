@@ -29,6 +29,7 @@ import com.mrezequiel.su.BuildConfig
 import com.mrezequiel.su.R
 import com.mrezequiel.su.apApp
 import com.mrezequiel.su.util.Version
+import com.mrezequiel.su.util.BootBackup
 import com.mrezequiel.su.util.copyAndClose
 import com.mrezequiel.su.util.copyAndCloseOut
 import com.mrezequiel.su.util.createRootShell
@@ -402,6 +403,14 @@ class PatchesViewModel : ViewModel() {
                 patching = true
                 try {
                     Log.d(TAG, "starting patching...")
+                    patchLog += "Backup automatico do boot atual...\n"
+                    val backupPath = BootBackup.backup()
+                    if (backupPath != null) {
+                        patchLog += "Backup salvo em $backupPath\n"
+                    } else {
+                        patchLog += "AVISO: backup falhou (sem root?), seguindo mesmo assim\n"
+                    }
+                    patchLog += "\n"
 
                     val apVer = Version.getManagerVersion().second
                     val rand = (1..4).map { ('a'..'z').random() }.joinToString("")
