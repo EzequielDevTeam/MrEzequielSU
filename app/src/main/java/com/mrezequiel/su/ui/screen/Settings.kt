@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Commit
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.Engineering
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.FeaturedPlayList
 import androidx.compose.material.icons.filled.FormatColorFill
 import androidx.compose.material.icons.filled.InvertColors
@@ -342,6 +343,8 @@ fun SettingScreen() {
                 checkUpdate = it
             }
 
+            SectionHeader(R.string.section_appearance)
+
             // Night Mode Follow System
             var nightFollowSystem by rememberSaveable {
                 mutableStateOf(
@@ -426,6 +429,10 @@ fun SettingScreen() {
                 }, leadingContent = { Icon(Icons.Filled.FormatColorFill, null) })
             }
 
+            BackgroundSettingRow()
+
+            SectionHeader(R.string.section_security)
+
             // su path
             if (kPatchReady) {
                 ListItem(
@@ -447,6 +454,7 @@ fun SettingScreen() {
             ListItem(
                 headlineContent = { Text(stringResource(id = R.string.su_superkey_title)) },
                 leadingContent = { Icon(Icons.Filled.VpnKey, null) },
+                trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowForward, null) },
                 supportingContent = {
                     Text(
                         text = stringResource(
@@ -460,7 +468,7 @@ fun SettingScreen() {
                     showSuperKeyDialog.value = true
                 })
 
-            BackgroundSettingRow()
+            SectionHeader(R.string.section_system)
 
             RebootRow()
 
