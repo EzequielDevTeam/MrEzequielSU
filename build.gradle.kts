@@ -49,7 +49,11 @@ fun getBranch(): String {
 }
 
 fun getVersionName(): String {
-    return getGitDescribe()
+    val props = java.util.Properties().apply {
+        File(rootDir, "version.properties").inputStream().use { load(it) }
+    }
+    val base = props.getProperty("managerVersionBase", "3.1")
+    return base + "-" + getGitDescribe()
 }
 
 tasks.register("printVersion") {
