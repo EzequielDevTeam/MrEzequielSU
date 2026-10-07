@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Security
@@ -48,6 +49,7 @@ fun RebootRow() {
     ListItem(
         headlineContent = { Text(text = stringResource(id = R.string.sys_reboot_title)) },
         leadingContent = { Icon(Icons.Filled.Refresh, null) },
+        trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowForward, null) },
         modifier = Modifier.clickable { show = true }
     )
 
@@ -124,6 +126,7 @@ fun AvcLogRow() {
     ListItem(
         headlineContent = { Text(text = stringResource(id = R.string.sys_avc_title)) },
         leadingContent = { Icon(Icons.Filled.Description, null) },
+        trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowForward, null) },
         modifier = Modifier.clickable {
             show = true
             log = null
