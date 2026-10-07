@@ -299,6 +299,9 @@
     <string name="su_duration_day">1 dia</string>
     <string name="su_duration_week">7 dias</string>
     <string name="su_temp_label">Temporário</string>
+    <string name="section_appearance">Aparência</string>
+    <string name="section_security">Segurança</string>
+    <string name="section_system">Sistema</string>
     <string name="sys_reboot_title">Reiniciar</string>
     <string name="sys_reboot_system">Sistema</string>
     <string name="sys_reboot_recovery">Recovery</string>
