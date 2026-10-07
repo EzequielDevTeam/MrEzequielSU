@@ -462,6 +462,12 @@ fun SettingScreen() {
 
             BackgroundSettingRow()
 
+            RebootRow()
+
+            SelinuxRow()
+
+            AvcLogRow()
+
             // language
             ListItem(headlineContent = {
                 Text(text = stringResource(id = R.string.settings_app_language))
