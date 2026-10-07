@@ -299,6 +299,14 @@
     <string name="su_duration_day">1 dia</string>
     <string name="su_duration_week">7 dias</string>
     <string name="su_temp_label">Temporário</string>
+    <string name="sys_reboot_title">Reiniciar</string>
+    <string name="sys_reboot_system">Sistema</string>
+    <string name="sys_reboot_recovery">Recovery</string>
+    <string name="sys_reboot_bootloader">Bootloader</string>
+    <string name="sys_reboot_edl">Download / EDL</string>
+    <string name="sys_selinux_title">SELinux permissivo</string>
+    <string name="sys_avc_title">Log AVC (SELinux)</string>
+    <string name="sys_avc_empty">Sem negações recentes. Se vazio com root ativo, rode de novo após reproduzir o problema.</string>
     <string name="su_superkey_title">SuperKey</string>
     <string name="su_superkey_set">Definida</string>
     <string name="su_superkey_empty">Não definida</string>
