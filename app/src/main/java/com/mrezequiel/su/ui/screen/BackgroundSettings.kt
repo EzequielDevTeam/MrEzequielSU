@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Wallpaper
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
@@ -91,6 +92,7 @@ fun BackgroundSettingRow() {
         headlineContent = { Text(text = stringResource(id = R.string.bg_title)) },
         supportingContent = { Text(text = stringResource(id = bgModeLabel(mode))) },
         leadingContent = { Icon(Icons.Filled.Wallpaper, null) },
+        trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowForward, null) },
         modifier = Modifier.clickable { showDialog.value = true }
     )
 
