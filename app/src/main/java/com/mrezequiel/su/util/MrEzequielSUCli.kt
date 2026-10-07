@@ -89,7 +89,14 @@ private fun createMainRootShell() : Shell {
             } catch (e: Throwable) {
                 Log.e(TAG, "retry su failed: ", e)
                 builder.setCommands("sh")
-                builder.build()
+                try {
+                    builder.build()
+                } catch (e2: Throwable) {
+                    Log.e(TAG, "fallback sh failed, fresh builder: ", e2)
+                    Shell.Builder.create()
+                        .setInitializers(RootShellInitializer::class.java)
+                        .build("sh")
+                }
             }
         }
     }
@@ -175,7 +182,12 @@ fun tryGetRootShell(): Shell {
                 builder.build("su")
             } catch (e: Throwable) {
                 Log.e(TAG, "retry su failed: ", e)
-                builder.build("sh")
+                try {
+                    builder.build("sh")
+                } catch (e2: Throwable) {
+                    Log.e(TAG, "fallback sh failed, fresh builder: ", e2)
+                    Shell.Builder.create().build("sh")
+                }
             }
         }
     }
