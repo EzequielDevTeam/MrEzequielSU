@@ -246,6 +246,23 @@ private fun getMetaModuleWarningText(
     viewModel: APModuleViewModel,
     context: Context
 ) : String? {
+    // SuFile depende do MainShell: sem root valido ele lanca em vez de retornar.
+    // runCatching aqui = sem card de aviso, nunca crash na main.
+    runCatching { com.topjohnwu.superuser.internal.MainShell.get() }.onFailure {
+        com.mrezequiel.su.util.resetMainShellStuck()
+        return null
+    }
+    return runCatching {
+        getMetaModuleWarningTextUnsafe(viewModel, context)
+    }.onFailure {
+        com.mrezequiel.su.util.resetMainShellStuck()
+    }.getOrNull()
+}
+
+private fun getMetaModuleWarningTextUnsafe(
+    viewModel: APModuleViewModel,
+    context: Context
+) : String? {
     val needsMountModule = viewModel.moduleList.any { module ->
         val moduleDir = "/data/adb/modules/${module.id}"
 
