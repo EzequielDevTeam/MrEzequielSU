@@ -80,6 +80,14 @@ class CrashHandleActivity : ComponentActivity() {
             append("Time: ").append(formattedDateTime).append("\n\n")
             append("Thread: ").append(threadName).append("\n")
             append("Crash Info: \n").append(exceptionMessage)
+            if (exceptionMessage != null && (exceptionMessage.contains("Unable to create a shell")
+                        || exceptionMessage.contains("main shell")
+                        || exceptionMessage.contains("not a shell"))
+            ) {
+                append("\n\nDICA: sem acesso root. Causas comuns: 1) faltou REBOOT apos atualizar o boot; ")
+                append("2) SuperKey do app diferente da gravada no boot (repache com a mesma chave); ")
+                append("3) boot sem patch. Reinicie o aparelho e abra o app de novo.")
+            }
         }
 
         setContent {
