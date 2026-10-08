@@ -38,7 +38,7 @@ jobs:
           ls -lh *.kpm
 
       - name: Upload KPM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: kpm-hosts-redirect
           path: kpm-src/src/hosts_file_redirect/*.kpm
@@ -52,7 +52,7 @@ jobs:
           ls -lh *.kpm
 
       - name: Upload su_sensor
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: kpm-su-sensor
           path: kpm-src/src/su-sensor/*.kpm
