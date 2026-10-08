@@ -65,7 +65,12 @@ fun createRootShell(globalMnt: Boolean = false): Shell {
                 }
             } catch (e: Throwable) {
                 Log.e(TAG, "retry su failed: ", e)
-                return builder.build("sh")
+                return runCatching { builder.build("sh") }.getOrElse {
+                    Log.e(TAG, "fallback sh failed, fresh builder")
+                    Shell.Builder.create()
+                        .setInitializers(RootShellInitializer::class.java)
+                        .build("sh")
+                }
             }
         }
     }
