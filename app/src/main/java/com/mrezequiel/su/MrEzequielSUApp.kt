@@ -238,6 +238,9 @@ class APApplication : Application(), Thread.UncaughtExceptionHandler {
                             }
                         }
                     }
+                    // Root confirmado via JNI: recria o MainShell como root
+                    // (ele nasceu "sh" seguro no onCreate).
+                    runCatching { MrEzequielSUCli.refresh() }
                     Log.d(TAG, "ap state: " + _apStateLiveData.value)
 
                     return@thread
@@ -290,6 +293,15 @@ class APApplication : Application(), Thread.UncaughtExceptionHandler {
             return
         }
         apApp = this
+
+        // MainShell seguro desde o boot do app: sem root ele vira um "sh" comum
+        // em vez de estourar "main shell died" na thread main (ex.: SuFile na tela
+        // de modulos). Com root, o refresh() no setter de superKey promove para root.
+        runCatching {
+            com.topjohnwu.superuser.internal.MainShell.setBuilder(
+                com.topjohnwu.superuser.Shell.Builder.create().setCommands("sh")
+            )
+        }
 
         val isArm64 = Build.SUPPORTED_ABIS.any { it == "arm64-v8a" }
         if (!isArm64) {
