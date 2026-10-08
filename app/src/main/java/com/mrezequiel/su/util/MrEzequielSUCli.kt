@@ -144,6 +144,19 @@ object MrEzequielSUCli {
     }
 }
 
+/** Desgruda o MainShell apos falha (o flag isInitMain nao tem finally no libsu):
+ * sem isso, uma falha vira "died during initialization" para sempre no processo. */
+fun resetMainShellStuck() {
+    runCatching {
+        val clazz = MainShell::class.java
+        clazz.getDeclaredField("isInitMain").apply {
+            isAccessible = true
+            setBoolean(null, false)
+            isAccessible = false
+        }
+    }
+}
+
 fun getRootShell(globalMnt: Boolean = false): Shell {
 
     return if (globalMnt) MrEzequielSUCli.GLOBAL_MNT_SHELL else {
