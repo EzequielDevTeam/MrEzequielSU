@@ -106,7 +106,8 @@ private fun createMainRootShell() : Shell {
         }
     }
 
-    MainShell.setBuilder(builder)
+    // NUNCA setBuilder aqui: o MainShell builder e setado uma unica vez no
+    // onCreate. Chamar de novo com o main ja criado lanca "already created".
     return shell
 }
 
@@ -115,19 +116,22 @@ object MrEzequielSUCli {
     var SHELL: Shell = createMainRootShell()
     val GLOBAL_MNT_SHELL: Shell = createRootShell(true)
 
-    // Troca o MainShell sem NUNCA deixar mainBuilder null: constroi o shell novo
-    // primeiro e depois troca o shell vivo sob o monitor da classe. Janela null
-    // causava "main shell died" na thread main (ex.: lista de modulos via SuFile).
+    // Promove o MainShell sem setBuilder (que crasharia com "already created"):
+    // troca o shell vivo e marca como iniciado, sob o monitor da classe.
     @Synchronized
     fun refresh() {
         val tmp = SHELL
 
-        // createMainRootShell() ja aponta o MainShell builder para o builder novo.
         SHELL = createMainRootShell()
 
         runCatching {
             synchronized(MainShell::class.java) {
                 val clazz = MainShell::class.java
+                clazz.getDeclaredField("isInitMain").apply {
+                    isAccessible = true
+                    setBoolean(null, true)
+                    isAccessible = false
+                }
                 val f = clazz.getDeclaredField("mainShell").apply { isAccessible = true }
                 @Suppress("UNCHECKED_CAST")
                 val arr = f.get(null) as Array<Any?>
