@@ -115,34 +115,27 @@ object MrEzequielSUCli {
     var SHELL: Shell = createMainRootShell()
     val GLOBAL_MNT_SHELL: Shell = createRootShell(true)
 
-    // Serialized so a reader can never observe the half-reset MainShell (private
-    // fields cleared via reflection) between the reset and the SHELL swap.
+    // Troca o MainShell sem NUNCA deixar mainBuilder null: constroi o shell novo
+    // primeiro e depois troca o shell vivo sob o monitor da classe. Janela null
+    // causava "main shell died" na thread main (ex.: lista de modulos via SuFile).
     @Synchronized
     fun refresh() {
         val tmp = SHELL
 
-        val clazz = MainShell::class.java // reset MainShell
-        clazz.getDeclaredField("isInitMain").apply {
-            isAccessible = true
-            setBoolean(null, false)
-            isAccessible = false
-        }
-
-        clazz.getDeclaredField("mainShell").apply {
-            isAccessible = true
-            @Suppress("UNCHECKED_CAST")
-            val arr = get(null) as Array<Any?>
-            arr[0] = null
-            isAccessible = false
-        }
-
-        clazz.getDeclaredField("mainBuilder").apply {
-            isAccessible = true
-            set(null, null)
-            isAccessible = false
-        }
-
+        // createMainRootShell() ja aponta o MainShell builder para o builder novo.
         SHELL = createMainRootShell()
+
+        runCatching {
+            synchronized(MainShell::class.java) {
+                val clazz = MainShell::class.java
+                val f = clazz.getDeclaredField("mainShell").apply { isAccessible = true }
+                @Suppress("UNCHECKED_CAST")
+                val arr = f.get(null) as Array<Any?>
+                arr[0] = SHELL
+                f.isAccessible = false
+            }
+        }
+
         tmp.close()
     }
 }
