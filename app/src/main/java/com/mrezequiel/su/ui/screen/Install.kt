@@ -149,11 +149,16 @@ fun InstallScreen(navigator: DestinationsNavigator, uri: Uri, type: MODULE_TYPE)
 
                     // check metamodule
                     if (hasMetaModule()) return@launch
-                    val mountOldDirectory =
-                        SuFile.open("/data/adb/modules/${getModuleIdFromUri(context, uri)}/system")
-                    val mountNewDirectory =
-                        SuFile.open("/data/adb/modules_update/${getModuleIdFromUri(context, uri)}/system")
-                    if (!mountNewDirectory.isDirectory && !mountOldDirectory.isDirectory) return@launch
+                    val mountDirs = runCatching {
+                        val mountOldDirectory =
+                            SuFile.open("/data/adb/modules/${getModuleIdFromUri(context, uri)}/system")
+                        val mountNewDirectory =
+                            SuFile.open("/data/adb/modules_update/${getModuleIdFromUri(context, uri)}/system")
+                        mountNewDirectory.isDirectory || mountOldDirectory.isDirectory
+                    }.onFailure {
+                        com.mrezequiel.su.util.resetMainShellStuck()
+                    }.getOrDefault(false)
+                    if (!mountDirs) return@launch
 
                     metaModuleAlertDialog.show()
                 }
