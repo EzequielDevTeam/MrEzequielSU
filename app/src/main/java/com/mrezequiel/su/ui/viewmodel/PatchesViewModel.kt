@@ -74,7 +74,7 @@ class PatchesViewModel : ViewModel() {
 
     private val patchDir: ExtendedFile = FileSystemManager.getLocal().getFile(apApp.filesDir.parent, "patch")
     private var srcBoot: ExtendedFile = patchDir.getChildFile("boot.img")
-    private var shell: Shell = createRootShell()
+    private val shell: Shell by lazy { createRootShell() }
     private var prepared: Boolean = false
 
     // Serializes work that mutates patchDir: prepare() wipes it, so a concurrent
