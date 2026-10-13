@@ -2,7 +2,7 @@
 
 ![Mascote](assets/icons/nerd.jpg)
 
-Solucao de root via kernel, com nome e cara proprios.
+Root via kernel, com nome e cara próprios. Feito em cima do APatch, de brasileiro pra brasileiro.
 
 ```
  __  __      _____                  _      _ _____ _   _
@@ -17,4 +17,4 @@ Solucao de root via kernel, com nome e cara proprios.
 
 ## Build
 
-Automatico via GitHub Actions (`Build MrEzequielSU`): baixa o fonte oficial, aplica rebrand (`me.bmax.apatch` -> `com.mrezequiel.su`, nome -> MrEzequielSU), UI custom (tema mascote + fundo), icones e banner do mascote, e compila os APKs `MrEzequielSU_1.0`. Resultado em Artifacts.
+Automático no GitHub Actions (`Build MrEzequielSU`): puxa o fonte, aplica o rebrand, mete o tema do mascote e cospe o APK. Pega em Artifacts ou nas Releases.
